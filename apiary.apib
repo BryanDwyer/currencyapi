@@ -51,6 +51,7 @@ The steps and API calls you would take in this use case are:
     - Receive an email with a CSV of fullcodes for these Cards.
 - Accept the fullcode in your checkout, and create a Transaction on the Code (POST /codes/{fullcode}/transactions).
 - Check the remaining value associated with the fullcode and display to your recipient (GET /codes/{fullcode}/balance).
+- Add addition value to the Code using the cardId (POST /cards/{cardId}/code/transactions).
 
 #### High level architecture diagram
 
@@ -521,7 +522,7 @@ Use this endpoint if your system or internal staff need to create a Transaction 
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
 
     + Attributes
-        + value (number, required) - The amount to use from the Code in the smallest currency unit (such as cents).  Must be a postive number.  If the amount exceeds the current value of the code, an error will result.
+        + value (number, required) - The amount to use from the Code in the smallest currency unit (such as cents). If the amount exceeds the current value of the code, an error will result. Use a negative amount if you wish to add additional funds to the code card. 
         + currency  (string, required) - The 3 character ISO-4217 currency code.  The supplied currency must match the currency of code when it was created or an error will result.
         + userSuppliedId (string, required) - A unique identifier for this transaction.
         
