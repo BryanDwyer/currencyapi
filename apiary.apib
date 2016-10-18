@@ -200,6 +200,7 @@ The categories object is optional. If provided, it will attach the given Categor
             + initialValue (number) - the starting value of the code, in the smallest currency unit (such as cents).
             + currency (string) - The 3 character ISO-4217 currency.
             + expires (string) - The code's optional expiry date and time.  ISO-8601 format.
+            + startDate (string) - The code's optional start date and time.  ISO-8601 format.
         + Categories
             + categoryKey (string) - The key of the category. Examples: "giftbit_type", "giftbit_order", "city"
             + categoryValue (string) - The value of the category. Examples: "PROMO", "My Order", "Victoria"
@@ -296,9 +297,9 @@ Retrieve your created Cards.  Results are returned in descending order of creati
 ### Retrieve Card by cardId [GET /cards/{cardId}]
 
 Look up a single Card by by the Giftbit assigned cardId.
-            
+
 + Parameters 
-    + cardId (string) - The identifier returned when the Card and Code were created.
+    + cardId (string, required) - The Giftbit assigned cardId.
 
 + Request (application/json)
     + Headers
@@ -521,14 +522,14 @@ Use this endpoint if your system or internal staff need to create a Transaction 
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
 
     + Attributes
-        + value (number, required) - The amount to use from the Code in the smallest currency unit (such as cents).  Must be a postive number.  If the amount exceeds the current value of the code, an error will result.
+        + value (number, required) - The amount of the transaction in the smallest currency unit (such as cents). A positive value will increase the balance of the Code. A negative will decrease the balance of the Code. If the value of the transaction would bring the balance of the Code below zero, an error will be returned.
         + currency  (string, required) - The 3 character ISO-4217 currency code.  The supplied currency must match the currency of code when it was created or an error will result.
         + userSuppliedId (string, required) - A unique identifier for this transaction.
         
     + Body
     
             {
-            "value": "500",
+            "value": -250,
             "currency": "CAD",
             "userSuppliedId": "someTransaction"
             }
@@ -540,8 +541,8 @@ Use this endpoint if your system or internal staff need to create a Transaction 
             {
                 "transaction" {
                     "transactionId": "transaction-86251f7b040b45d3b7364bae04c74870",
-                    "value": 500,
-                    "valueAvailableAfterTransaction": 500,
+                    "value": -250,
+                    "valueAvailableAfterTransaction": 4750,
                     "userSuppliedId": "someTransaction",
                     "dateCreated": "2016-08-10T09:00:00.000+0000"
                 }
@@ -661,7 +662,7 @@ Use some or all of the remaining value of the Code (create a Transaction on the 
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
 
     + Attributes
-        + value (number, required) - The amount to use from the Code in the smallest currency unit (such as cents).  Must be a postive number.  If the amount exceeds the current value of the code, an error will result.
+        + value (number, required) - The amount the transaction will change the balance on the Code in the smallest currency unit (such as cents).  Must be a negative number. If the transaction amount would bring the Code balance below zero, and error will be returned.
         + currency  (string, required) The 3 character ISO-4217 currency code.  The supplied currency must match the currency of code when it was created or an error will result.
         + userSuppliedId (string, required) - A unique identifier for this transaction.
 
@@ -669,7 +670,7 @@ Use some or all of the remaining value of the Code (create a Transaction on the 
     
             {
                 "userSuppliedId": "12345678",
-                "value": 165,
+                "value": -165,
                 "currency": "USD"
             }
 
@@ -688,7 +689,7 @@ Use some or all of the remaining value of the Code (create a Transaction on the 
                 "transaction":{
                     "userSuppliedId": "12345678",
                     "transactionId":"transaction-d7yc1b55-6de6-49e5-82d5-fd37edb5f8ea",
-                    "value": 165,
+                    "value": -165,
                     "dateCreated": "2016-08-10T08:00:00.000+0000",
                     "valueAvailableAfterTransaction": 4835
                     }
@@ -716,14 +717,14 @@ Retrieve all Transactions for a Code given the fullcode.  Useful if you'd like t
                     {
                         "userSuppliedId": "12345",
                         "transactionId":"transaction-d7yc1b55-6de6-49e5-82d5-fd37edb5f8ea",
-                        "value": 500,
+                        "value": -500,
                         "dateCreated": "2016-08-11T08:32:00.000+0000",
                         "valueAvailableAfterTransaction": 800
                     },
                     {
                         "userSuppliedId": "12344",
                         "transactionId":"transaction-avji1b55-6gu7-4ke5-82s5-fd37edb5ju9a",
-                        "value": 700,
+                        "value": -700,
                         "dateCreated": "2016-08-10T08:00:00.000+0000",
                         "valueAvailableAfterTransaction": 1300
                     }
@@ -753,7 +754,7 @@ Retrieve a Transaction for a Code given the fullcode and the transactionId.
                 "transaction":{
                     "userSuppliedId": "12345678",
                     "transactionId":"transaction-d7yc1b55-6de6-49e5-82d5-fd37edb5f8ea",
-                    "value": 165,
+                    "value": -165,
                     "dateCreated": "2016-08-10T08:00:00.000+0000",
                     "valueAvailableAfterTransaction": 4835
                     }
@@ -776,7 +777,7 @@ Retrieve a Transaction for a Code given the fullcode and the userSuppliedId.
                 "transaction":{
                     "userSuppliedId": "12345678",
                     "transactionId":"transaction-d7yc1b55-6de6-49e5-82d5-fd37edb5f8ea",
-                    "value": 165,
+                    "value": -165,
                     "dateCreated": "2016-08-10T08:00:00.000+0000",
                     "valueAvailableAfterTransaction": 4835
                     }
