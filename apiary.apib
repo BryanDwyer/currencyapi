@@ -49,7 +49,7 @@ The steps and API calls you would take in this use case are:
 - If you want to create many Cards at once via the web portal:
     - Create an order of Cards with associated Codes through the web portal.
     - Receive an email with a CSV of fullcodes for these Cards.
-- Accept the fullcode in your checkout, and create a Transaction on the Code (POST /codes/{fullcode}/transactions).
+- Accept the fullcode in your checkout, and create a Transaction on the Code (POST /codes/{fullcode}/transactions). The transaction cannot be a positive amount.
 - Check the remaining value associated with the fullcode and display to your recipient (GET /codes/{fullcode}/balance).
 
 #### High level architecture diagram
@@ -57,12 +57,12 @@ The steps and API calls you would take in this use case are:
 ![High level architecture](http://resources.giftbit.com/api/embeddedimages/Currency.API.high.level.architecture.png)
 
 ### Building a points accumulation program for your users
-Another common use case for this API is to power a points/rewards accumulation system for your user/application ecosystem.  In this example, you are not distributing or making use of Codes at all, but rather using the Cards endpoint exclusively to maintain points for your users.
+Another common use case for this API is to power a points/rewards accumulation system for your user/application ecosystem.  In this example, you are not distributing or making use of Codes at all, but rather using the Cards endpoint exclusively to maintain points for your users. Points can be added to or deducted from an existing Card. You can allow the user to see the points balance at any time.
 
 The steps and API calls you would take in this use case are: 
 - Create a new Card (POST /cards). Make sure you keep the returned cardId and associate it with a particular user in your system.
-- Every time you wish to adjust the user's points, create an appropriate transaction (POST cards/{cardId}/code/transactions).
-- Check the remaining value associated with the fullcode and display to your recipient (GET /cards/{cardId}/code/balance).
+- Every time you wish to adjust the user's points, create an appropriate transaction (POST cards/{cardId}/code/transactions). The transaction will be a positive amount when increasing the user’s points. The transaction will be negative when redeeming some or all of the user’s points.
+- Check the remaining value associated with the cardID and display to your recipient (GET /cards/{cardId}/code/balance).
 
 Note that in this example, you do everything through the cardId and do not need to use the Code endpoint.
 
