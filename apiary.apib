@@ -191,7 +191,7 @@ Cards represent a gift card, promotional offer, credit, or other means of eComme
 
 Create a Card and its corresponding Code.  Note that cardId on response should be persisted to lookup or interact with the Code.  The Code is not returned as part of the response.  If you provide an expiry, please ensure you have confirmed the legality of expiring value for your implementation.
 
-You can also provide a "giftbit_order" Category, which will assign the Card to whichever order you specify. If no "giftbit_order" is provided, the Card will be assigned to a default {"giftbit_order": "YYYY-MM-DD"} Category indicating the date the Card was created. Categories are not returned as part of the response.
+You can also provide a "giftbit_order" Category, which will assign the Card to whichever order you specify. If no "giftbit_order" is provided, the Card will be assigned to a default {"giftbit_order": "YYYY-MM-DD"} Category indicating the date the Card was created.
 
 + Request (application/json)
 The categories object is optional. If provided, it will attach the given Category objects to the Card, creating any that do not exist already.
