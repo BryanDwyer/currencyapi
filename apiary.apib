@@ -82,13 +82,15 @@ Attempting to reuse a userSuppliedId but providing different request parameters 
 
 Note that userSuppliedIds are considered per endpoint and do not need to be unique across different endpoints.
 
-## Reserved Categories: understanding giftbit_order and giftbit_type
+## Reserved Categories: understanding giftbit_order, giftbit_type, and giftbit_status
 
-Giftbit currently has two reserved Category keys: "giftbit_order" and "giftbit_type". A "giftbit_order" is the default grouping of Cards, and is assigned either through the web portal or the /cards endpoint; in this document, an order refers to a group of Cards that are attached to the same {"giftbit-order": "order name"} Category. 
+Giftbit currently has three reserved Category keys: "giftbit_order", "giftbit_type", and "giftbit_status". A "giftbit_order" is the default grouping of Cards, and is assigned either through the web portal or the /cards endpoint; in this document, an order refers to a group of Cards that are attached to the same {"giftbit-order": "order name"} Category. 
 
 Like any Category, stats are tracked by order - so descriptive order names applied to the right Cards will help you get the stats you are looking for. To group cards in the same order, you can supply the same value for {"giftbit_order": "your order name here"} Category when creating Cards through the /cards endpoint via the API, or you can order many cards at once through the web portal. If a "giftbit_order" Category is not provided on Card creation, the Cards will be assigned a default {"giftbit_order": "YYYY-MM-DD"} Category corresponding to the date they were created.
 
 A "giftbit_type" refers to the Card's purpose, and corresponds to the types that can be assigned through the web portal. There are four allowed values for the "giftbit_type" key: PROMO, GIFT_CARD, ACCOUNT_CREDIT, and UNCATEGORIZED. If a "giftbit_type" is not provided on Card creation, the Cards will be assigned the UNCATEGORIZED value. 
+
+A "giftbit_status" refers to whether or not the Card has been cancelled; if the Card has the {"giftbit_status": "CANCELLED"} Category, it as been cancelled.
 
 ## Handling error responses
 
@@ -579,7 +581,7 @@ To transact against the Code in your checkout or when a recipient presents their
     
 ### Cancel a Card [DELETE /cards/{cardId}]
 
-This will mark a Card as cancelled by attaching the Category "giftbit_status": "CANCELLED", and will draw down the balance on the associated Code to zero. An expired Card cannot be cancelled.
+This will mark a Card as cancelled by attaching the Category {"giftbit_status": "CANCELLED"}, and will draw down the balance on the associated Code to zero. An expired Card cannot be cancelled.
 
 + Request (application/json)
     + Headers
@@ -615,7 +617,7 @@ Retrieve a list of Categories that have been created.
 
 + Request (application/json)
     + Headers
-    
+
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
         
 + Response 200
