@@ -649,11 +649,13 @@ Retrieve a list of Categories that have been created.
 Cancel all Cards in a Category and their associated Codes. 
 
 + Request (application/json)
-    + Attributes (Category)
-        
     + Headers
 
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
+            
++ Parameters
+    + categoryKey (string) - The key of the category. Examples: "giftbit_type", "giftbit_order", "city"
+    + categoryValue (string) - The value of the category. Examples: "PROMO", "My Order", "Victoria"
         
 + Response 200
     + Attributes (CancellationRequest)
