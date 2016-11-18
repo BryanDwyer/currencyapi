@@ -90,7 +90,7 @@ Like any Category, stats are tracked by order - so descriptive order names appli
 
 A "giftbit_type" refers to the Card's purpose, and corresponds to the types that can be assigned through the web portal. There are four allowed values for the "giftbit_type" key: PROMO, GIFT_CARD, ACCOUNT_CREDIT, and UNCATEGORIZED. If a "giftbit_type" is not provided on Card creation, the Cards will be assigned the UNCATEGORIZED value. 
 
-A "giftbit_status" refers to whether or not the Card has been cancelled; if the Card has the {"giftbit_status": "CANCELLED"} Category, it as been cancelled.
+A "giftbit_status" refers to whether or not the Card has been cancelled; if the Card has the {"giftbit_status": "CANCELLED"} Category, it has been cancelled.
 
 ## Handling error responses
 
@@ -579,7 +579,7 @@ To transact against the Code in your checkout or when a recipient presents their
                 }
             }
     
-### Cancel a Card [DELETE /cards/{cardId}]
+### Cancel a Card [POST /cards/{cardId}/cancel]
 
 This will mark a Card as cancelled by attaching the Category {"giftbit_status": "CANCELLED"}, and will draw down the balance on the associated Code to zero. An expired Card cannot be cancelled.
 
@@ -644,7 +644,7 @@ Retrieve a list of Categories that have been created.
                 ]
             }
 
-### Cancel Category [POST /cards/categories/cancel]
+### Cancel Category [POST /categories/{categoryKey}/{categoryValue}/cards/cancel]
 
 Cancel all Cards in a Category and their associated Codes. 
 
@@ -654,13 +654,6 @@ Cancel all Cards in a Category and their associated Codes.
     + Headers
 
             Authorization: Bearer <YOUR_ACCESS_TOKEN>
-
-    + Body
-    
-            {
-                "categoryKey": "giftbit_order",
-                "categoryValue": "my order name"
-            }
         
 + Response 200
     + Attributes (CancellationRequest)
